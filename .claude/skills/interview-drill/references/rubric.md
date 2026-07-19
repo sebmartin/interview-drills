@@ -22,7 +22,7 @@ Dimensions 2 and 3 are generic slots — their concrete, stack-appropriate meani
 - **Time vs. box** — under / at / over. Slow-but-correct is a different signal than fast-but-rough; name which.
 - **Unaided recovery** — did they find and fix their own bugs? Self-debugging is a strong positive.
 
-## Output shape for grade.md
+## Output shape (present this in conversation first — see SKILL.md's Mode 3 Phase A; only write it to `grade.md` once the human confirms it's fair)
 - Per-dimension: score + justification (with line cites).
 - **Strengths** (2–3, specific).
 - **Weaknesses** (2–3, specific, each with the *why*).

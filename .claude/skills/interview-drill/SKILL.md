@@ -87,14 +87,25 @@ Requires an active campaign (see above) — everything below happens inside `cam
 
 ## Mode 3 — Grade (AI reviews)
 
-When the human says "grade me" (or "done", or the time box expires):
+When the human says "grade me" (or "done", or the time box expires), grading happens in two phases: **draft and discuss**, then **persist**. Nothing gets written to disk or committed until the human has actually seen the scores and confirmed they're fair — a rushed write-then-defend order defeats the point of a discussion, and a score the human successfully argues down is a different fact than the one first computed, so it must not get persisted before that conversation happens.
+
+### Phase A — Draft and discuss (no files written, nothing committed)
+
 1. Read the human's solution from `campaigns/<active>/NNN-area-slug/src/` — working tree as-is, uncommitted changes included. Do not require a commit before grading.
 2. Score against `references/rubric.md` — every dimension gets a score AND a one-line justification citing specific files/lines. Dimensions 2 and 3 are generic slots ("Language & type-system usage", "Framework & domain idioms") — read the active campaign's `competency-map.md` for what they concretely mean for this drill's stack before scoring them. Dimension 7 (Clarity & idiom currency) always runs, unprompted: flag naming/style that would read as dated to a ~5-year unassisted practitioner in this stack (boolean-naming consistency, short-circuit chains vs. ternaries, missed destructuring/shorthand, or the equivalent idiom-currency signal for whatever stack this drill used, etc.), cite the line, name the idiomatic alternative.
-3. Write **learnable** feedback: what was strong, what was weak and *why*, the 2–3 highest-leverage things to study, and any idiom/API they reached for the hint ladder on (those are the study list). On a re-grade, run `git diff NNN-grade-0(N-1) NNN-grade-0N` (once the commit below exists) or diff against the working tree to ground the process notes in what actually changed, rather than relying on memory of the conversation. If listing commits rather than diffing (e.g. to narrate the attempt's history), path-filter with `-- NNN-area-slug` — a bare tag-range `git log` can include unrelated commits that landed on other drills *within this same campaign* in between (see "Path-scoped commits" below; this can no longer happen across campaigns, since each has its own repo).
+3. Draft **learnable** feedback: what was strong, what was weak and *why*, the 2–3 highest-leverage things to study, and any idiom/API they reached for the hint ladder on (those are the study list). On a re-grade, run `git diff NNN-grade-0(N-1) NNN-grade-0N` (once a graded commit exists) or diff against the working tree to ground the process notes in what actually changed, rather than relying on memory of the conversation. If listing commits rather than diffing (e.g. to narrate the attempt's history), path-filter with `-- NNN-area-slug` — a bare tag-range `git log` can include unrelated commits that landed on other drills *within this same campaign* in between (see "Path-scoped commits" below; this can no longer happen across campaigns, since each has its own repo).
 4. Factor in hints used and time vs. box.
-5. Recommend the **next drill's target** (usually the weakest dimension or an uncovered area).
-6. Save to `campaigns/<active>/NNN-area-slug/grade.md`, then update `campaigns/<active>/LEDGER.md` per `references/ledger-template.md`'s "How the AI should use it" section — the ledger tracks weaknesses as status rows tagged with which drills moved them, not growing prose; keep it a scannable index and let `grade.md`/git history hold the detail.
-7. **Commit the graded state (in this campaign's own repo) and tag it `NNN-grade-0N`** (N = this grading pass's number, 1-indexed). **Check for out-of-scope changes first** (see "Path-scoped commits" in `references/problem-template.md`'s Git workflow section) — stage and commit only this drill's path, never the whole tree. Commit message includes the score, e.g. `003: attempt 1 — 4.5/5 (decomp/state 5, clarity 4)`. Never amend a prior graded commit; each pass gets its own. There is no separate `solution/` snapshot — the tagged commit itself is the permanent record of that attempt (`git show NNN-grade-0N:NNN-area-slug/src/App.tsx`, run from inside this campaign's repo, retrieves any file from it — note this path is stack-specific; a Vite/React drill's file would actually sit at `NNN-area-slug/src/src/App.tsx` per Vite's own nested convention, see Setup step 3).
+5. Draft the recommended **next drill's target** (usually the weakest dimension or an uncovered area).
+6. **Present the full draft in conversation** — every dimension's score and justification, strengths, weaknesses, study list, next-target — and stop there. Treat every score and claimed bug as falsifiable, not a verdict: invite pushback explicitly (e.g. "let me know if any of this doesn't hold up"). If the human pushes back or asks a question, actually re-examine the code/behavior in question rather than defending the first take by default — a correction that survives scrutiny is worth more than a first draft that doesn't. Revise scores, justifications, or the writeup in place, in conversation, for as many rounds as it takes. Do not write `grade.md`, do not touch `LEDGER.md`, do not commit or tag anything during this phase, no matter how confident the initial draft feels.
+
+### Phase B — Persist (only once the human confirms the grade is fair)
+
+Trigger: the human says something to the effect of the draft being fair/accepted/good to save — not merely the absence of objection to phase A's first message.
+
+7. Save the finalized version to `campaigns/<active>/NNN-area-slug/grade.md`, then update `campaigns/<active>/LEDGER.md` per `references/ledger-template.md`'s "How the AI should use it" section — the ledger tracks weaknesses as status rows tagged with which drills moved them, not growing prose; keep it a scannable index and let `grade.md`/git history hold the detail.
+8. **Commit the graded state (in this campaign's own repo) and tag it `NNN-grade-0N`** (N = this grading pass's number, 1-indexed). **Check for out-of-scope changes first** (see "Path-scoped commits" in `references/problem-template.md`'s Git workflow section) — stage and commit only this drill's path, never the whole tree. Commit message includes the score, e.g. `003: attempt 1 — 4.5/5 (decomp/state 5, clarity 4)`. Never amend a prior graded commit; each pass gets its own. There is no separate `solution/` snapshot — the tagged commit itself is the permanent record of that attempt (`git show NNN-grade-0N:NNN-area-slug/src/App.tsx`, run from inside this campaign's repo, retrieves any file from it — note this path is stack-specific; a Vite/React drill's file would actually sit at `NNN-area-slug/src/src/App.tsx` per Vite's own nested convention, see Setup step 3).
+
+If new back-and-forth happens *after* phase B's commit (a later re-examination changes a score), that's a correction, not an amendment: write it as a fresh commit that updates `grade.md`/`LEDGER.md`, same as any other change made after a graded tag already exists. Never amend or move a tag that's already been created.
 
 ---
 
@@ -159,8 +170,10 @@ If the human is also using the `ai-workspace` threads plugin for a related proje
 #     states the task + criteria, then stops.
 # Solo:  you code whenever you want. Ask conceptual questions freely; the AI hints, not solves. No clock.
 #        Commit WIP whenever you like; `git diff NNN-start` any time to see your full delta.
-# Grade: "grade me"  → AI scores vs. the rubric, writes grade.md, updates
-#        the active campaign's LEDGER.md, commits + tags NNN-grade-0N in its own repo.
+# Grade: "grade me"  → AI drafts scores vs. the rubric IN CONVERSATION ONLY, invites
+#        pushback/questions, revises as needed. Only once you confirm it's fair does
+#        it write grade.md, update the active campaign's LEDGER.md, and commit + tag
+#        NNN-grade-0N in its own repo.
 ```
 
 ## Notes for the AI running this skill
