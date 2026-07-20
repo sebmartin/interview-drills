@@ -51,7 +51,7 @@ Concise by design — one short paragraph per item. If something here recurs, mo
 
 - **Setup:** scan *Active weaknesses* and *Areas not yet covered* to pick the target; prefer open weaknesses with no recent movement, and uncovered areas, over re-testing something already resolved. Raise difficulty when a dimension has been ≥4 twice.
 - **Grade:**
-  1. Append the new row to **Drills**.
+  1. Append **one** new row to **Drills** per drill — even if the human reworked the code across several rounds of discussion before confirming the grade (see `SKILL.md`'s Mode 3), that's still one drill, one row. If it took more than one round, note the revision count briefly in the Area(s) cell (e.g. `data fetching + lists (#4, #5), 2 revisions before final`) rather than adding `NNN`/`NNNb`-style rows or duplicate ids for the same drill.
   2. For each weakness surfaced this drill: if it's new, add a row to **Active weaknesses**. If it already has a row, update `Seen in`/`Moved by`/`Note` in place — don't add a duplicate row or a second paragraph of history; the note reflects *current* state only.
   3. If a weakness is now resolved (no recurrence across 2+ drills where it had a real chance to show up, or a structural fix like a lint rule that makes recurrence unlikely), **move its row** from *Active weaknesses* to a new subsection under **Improvements**, written as the concise fixed-length paragraph shown above. Don't leave it in both places.
   4. If a resolved item recurs, move it back to *Active weaknesses* with `Status: regressed` and reference which drill broke it — do not silently re-resolve without noting the regression happened.
