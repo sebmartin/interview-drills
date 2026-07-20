@@ -15,3 +15,13 @@ At the **start** of a session, if the human's request looks drill-related (menti
 This is a light nudge, not a gate — if there's only one campaign, or the human clearly already said which one, don't bother asking.
 
 `.last-campaign` is gitignored — it's a local session convenience, not shared project state.
+
+### Keep this repo generic — no sensitive content in commits
+
+This repo (the skill itself: `SKILL.md`, `references/`, `README.md`, commit messages, etc.) is public. `campaigns/` is gitignored specifically so real job-search content never lands here — but that only protects file content, not what a commit message, code comment, or doc example says. Before writing or committing anything **in this repo** (not inside a `campaigns/<name>/` repo, which has its own separate rules), check it doesn't name or describe:
+
+- A real company, employer, or product name (including ones from past or active campaigns — e.g. don't use a real target company as a "for example" in skill docs).
+- A real job posting, job description excerpt, or anything identifying who a campaign is for.
+- Any other personal or job-search-sensitive detail (dates tied to a real application, a referral contact's name, etc.).
+
+If an example is needed in skill docs, invent a generic placeholder (`Acme Corp`, `some-startup`) rather than reaching for a real one. If you're about to commit and something looks like it might be real rather than illustrative, stop and ask before committing/pushing — don't guess.
