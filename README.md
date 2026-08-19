@@ -105,12 +105,14 @@ A campaign repo holds every drill for that job in one history, as sibling folder
 
 Tags carry no campaign name, since a campaign repo only ever holds its own.
 
+Run these from inside the campaign's own directory, since that's where its repo lives. Using the `001-data-fetching` drill from the tree above:
+
 ```
-git diff 003-start                       # everything you've changed, committed or not
-git diff 003-start 003-grade-01          # what the graded submission changed
-git diff 003-grade-01 003-grade-02       # what moved between two grading passes
-git show 003-grade-01:003-slug/src/app.ts   # any file exactly as it was when graded
-git log 003-start..HEAD -- 003-slug      # commits for this drill only
+git diff 001-start                                    # everything you've changed, committed or not
+git diff 001-start 001-grade-01                       # what the graded submission changed
+git diff 001-grade-01 001-grade-02                    # what moved between two grading passes
+git show 001-grade-01:001-data-fetching/src/app.ts    # any file exactly as it was when graded
+git log 001-start..HEAD -- 001-data-fetching          # commits for this drill only
 ```
 
 There's no separate folder holding a saved solution. The tagged commit is the record, which is why anything from a past drill is recoverable with `git show`.
