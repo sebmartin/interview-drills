@@ -43,12 +43,16 @@ This directory is an `interview-drill` campaign — its own independent git repo
 
 **Stack:** <e.g. "React + TypeScript (frontend), Node.js + TypeScript (backend)" or whatever was specified — full detail lives in `competency-map.md`, this is a short summary>
 
+**Toolchain:** <the commands and config files every drill's scaffold should include for this stack — build/typecheck, lint/format, and the test runner (name it explicitly, plus its config file). One or two lines per stack if the campaign spans several. Setup follows this so the toolchain stays consistent across drills instead of being re-decided each time.>
+
 **Self-reported starting point:** <human's own words on what they think they're rusty on, verbatim or lightly cleaned up — don't editorialize or infer beyond what was said>
 ```
 
 Then create `campaigns/<name>/CLAUDE.md` containing just `@AGENTS.md` (Claude Code's file-import syntax — pulls that `AGENTS.md`'s content in at read time, so there's only one place to update).
 
-Setup reads this Context section (and `competency-map.md`) to flavor premises toward the target and weight area selection toward self-reported gaps.
+Fill in **Toolchain** from the stack captured in the quiz — pick each ecosystem's standard tools rather than asking the human to name them, and say which test runner a drill's scaffold should install and what its config file is called. Settling this once, at create time, is what stops a later drill from shipping tests with no runner wired up (or wired up so a CLI run works but the editor can't discover the project).
+
+Setup reads this Context section (and `competency-map.md`) to flavor premises toward the target, weight area selection toward self-reported gaps, and scaffold with the toolchain this campaign already settled on.
 
 ## 5. Seed LEDGER.md's Active weaknesses from the self-report
 
