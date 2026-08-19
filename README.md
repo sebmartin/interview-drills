@@ -112,7 +112,7 @@ git diff 001-start                                    # everything you've change
 git diff 001-start 001-grade-01                       # what the graded submission changed
 git diff 001-grade-01 001-grade-02                    # what moved between two grading passes
 git show 001-grade-01:001-data-fetching/src/app.ts    # any file exactly as it was when graded
-git log 001-start..HEAD -- 001-data-fetching          # commits for this drill only
+git log 001-start..HEAD -- 001-data-fetching          # commits made since the drill started
 ```
 
 There's no separate folder holding a saved solution. The tagged commit is the record, which is why anything from a past drill is recoverable with `git show`.
