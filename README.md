@@ -37,7 +37,7 @@ It picks the area, based on what the ledger says is weakest or hasn't been cover
 > grade me
 ```
 
-You get a score per rubric dimension, with the lines that earned it, and a note on what to study next. Nothing is written to disk yet: the scores are a draft, and you're expected to argue with them. If a finding doesn't hold up, say so and it gets re-examined. Once you accept the grade, it writes the review, updates the ledger the next drill is chosen from, and tags the commit. It grades whatever's currently in your files, so you can keep working and ask again.
+You get a score per rubric dimension, with the lines that earned it, and a note on what to study next. Nothing is written to disk yet: the scores are a draft, and you're expected to argue with them. If a finding doesn't hold up, say so and it gets re-examined. Once you accept the grade, it writes the review, updates the ledger the next drill is chosen from, and commits and tags the result inside that campaign's own local repo. Nothing is pushed and nothing reaches this repo's history; a campaign has no remote unless you give it one. It grades whatever's currently in your files, so you can keep working and ask again.
 
 ## How it works
 
