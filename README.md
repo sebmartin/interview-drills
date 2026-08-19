@@ -92,7 +92,7 @@ The practical consequence worth knowing: your campaigns exist only on your machi
 
 Staying in one long session across several drills costs you in two ways. Every turn re-sends the accumulated context, so the token spend grows with the length of the session rather than with the work you're doing. And the more drills sit in one context, the easier it is for details to bleed between them, which shows up as confident claims about code that belongs to a different drill. Start the drill, work it, get the grade, then start fresh.
 
-**Use Opus, with reasoning effort set high.** Pick the model with `/model`; set the effort in `/config`, or put `"effortLevel": "high"` in `~/.claude/settings.json`.
+**Use Opus, with reasoning effort set high.** Pick the model with `/model` and the effort with `/effort`. To make it stick across sessions, set `"effortLevel": "high"` in `~/.claude/settings.json`.
 
 This matters most in the two places the skill does real work. Writing a drill means producing a scaffold that builds, starter code with a genuine gap in it, and acceptance criteria that hold up when you push back on them. Grading means reading your diff rather than the file, verifying claims by running the code instead of asserting them, and noticing when a test passes without exercising the thing it names. Both degrade noticeably with less capable settings, and a bad grade is worse than no grade, since it sends the next drill at the wrong target.
 
